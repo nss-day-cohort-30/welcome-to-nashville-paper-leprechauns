@@ -52,10 +52,10 @@ button {
     overflow: auto
 }
 
-#section--results:empty { 
-    border: none;
-}
-
-span {
-    padding: 3px;
+#section--itenerary {
+    border: solid 1px black;
+    padding: 10px;
+    width: 400px;
+    max-height: 400px;
+    overflow: auto
 }
