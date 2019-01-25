@@ -109,29 +109,20 @@ function meetupSearch(textInput) {
     }
 }
 
-let searchSection = document.getElementById("section--search")
 let resultsSection = document.getElementById("section--results")
 let itenerarySection = document.getElementById("section--itenerary")
 
 let meetupDiv = document.createElement("div")
 meetupDiv.setAttribute("id", "meetupDiv")
 
-let meetupInput = document.createElement("input")
-meetupInput.setAttribute("type", "text")
-meetupInput.setAttribute("placeholder", "Search meetups by topic")
-meetupDiv.appendChild(meetupInput)
+let meetupInput = document.getElementById("input--meetups")
 
-let meetupButton = document.createElement("button")
-meetupButton.setAttribute("id", "meetupButton")
-meetupButton.textContent = "Search"
+let meetupButton = document.getElementById("button--meetups")
 meetupButton.addEventListener("click", function () {
     let categoryInput = meetupInput.value
     meetupInput.value = ""
     meetupSearch(categoryInput)
 })
-meetupDiv.appendChild(meetupButton)
-
-searchSection.appendChild(meetupDiv)
 
 //Get values for day, month, and year for today and tomorow
 let today = new Date
