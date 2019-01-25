@@ -114,9 +114,7 @@ function meetupSearch(textInput) {
     }
 }
 
-let meetupIteneraryDiv = document.createElement("div")
-meetupIteneraryDiv.setAttribute("id", "itenerary--meetup")
-meetupItenerarySection.appendChild(meetupIteneraryDiv)
+let meetupIteneraryDiv = document.getElementById("itenerary--meetup")
 
 let meetupDiv = document.createElement("div")
 meetupDiv.setAttribute("id", "meetupDiv")
