@@ -16,7 +16,9 @@ let tomorrowDay = pad(tomorrow.getDate())
 let todayYear = today.getFullYear()
 let tomorrowYear = tomorrow.getFullYear()
 
-//=========================================
+//=================================================================================
+
+// create div for displaying concerts itenerary item
 
 const fetchConcertAPI = (concertSearchTerm) => {
 
@@ -31,12 +33,34 @@ const fetchConcertAPI = (concertSearchTerm) => {
 
 }
 
-const concertSearch = (concertSearchTerm)
+const makeResultsComponent = (results) => {
+    for (let i =0; i < results.length; i++) {
+        return `
+        <span id="results--concerts${i}>${results}</span><button id="results-button--concerts$[i]>Save</button>
+        `
+    }
+}
 
+const showResults = (html) => {
+
+}
+
+const concertSearch = (term) => {
+    const results = fetchConcertAPI(term)
+    const html = makeResultsComponent(results)
+    showResults(html)
+}
+
+// find the button for a concerts search
 const concertSearchButton = document.getElementById("button--concerts")
+// find the concerts search input
 const concertInput = document.getElementById("input--concerts")
+//define what the user is searching for
 const concertSearchTerm = concertInput.value
-concertSearchButton.addEventListener("click", concertSearch())
+
+
+// event listener to activate concerts search
+concertSearchButton.addEventListener("click", concertSearch(concertSearchTerm))
 
 
 
