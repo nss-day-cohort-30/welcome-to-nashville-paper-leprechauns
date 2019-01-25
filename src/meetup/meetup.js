@@ -105,7 +105,7 @@ function meetupSearch(textInput) {
         }
     })
     if (validInput === false) {
-        window.alert("Invalid Input")
+        resultsSection.innerHTML = '<p style="color:red;">Invalid input</p>'
     }
 }
 
@@ -156,8 +156,9 @@ function createResults(events) {
     let resultCounter = 1
     console.log(events)
     if (events.events.length === 0) {
-        resultsSection.innerHTML = '<p style="color:red;">No events for this category today</p>'
+        resultsSection.innerHTML = '<p style="color:red;">No meetups for this category today</p>'
     } else {
+        resultsSection.innerHTML = ""
         events.events.forEach(function(element) {
             let span = document.createElement("span")
             span.setAttribute("id", `meetupResult${resultCounter}`)
