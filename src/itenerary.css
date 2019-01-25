@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-h1 {
-    text-align: center;
-=======
 body {
     font-family: sans-serif
 }
@@ -52,7 +48,7 @@ button {
     border: solid 1px black;
     padding: 10px;
     width: 400px;
-    max-height: 400px;
+    max-height: 200px;
     overflow: auto
 }
 
@@ -62,5 +58,8 @@ button {
     width: 400px;
     max-height: 400px;
     overflow: auto
->>>>>>> 6564af0763ce12be9908db8b02710d504d7ff360
+}
+
+.hint--park {
+    font-size : 10px;
 }
