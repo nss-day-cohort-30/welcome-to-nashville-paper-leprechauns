@@ -109,8 +109,13 @@ function meetupSearch(textInput) {
     }
 }
 
+
 let resultsSection = document.getElementById("section--results")
 let itenerarySection = document.getElementById("section--itenerary")
+
+let meetupIteneraryDiv = document.createElement("div")
+meetupIteneraryDiv.setAttribute("id", "itenerary--meetup")
+itenerarySection.appendChild(meetupIteneraryDiv)
 
 let meetupDiv = document.createElement("div")
 meetupDiv.setAttribute("id", "meetupDiv")
@@ -159,6 +164,7 @@ function createResults(events) {
             span.innerHTML = `${resultCounter}: `
             let result = document.createElement("a")
             result.setAttribute("href", element.url)
+            result.setAttribute("id", `meetupLink${resultCounter}`)
             result.innerHTML = element.name.text
             let saveButton = document.createElement("button")
             saveButton.setAttribute("id", `meetupButton${resultCounter}`)
@@ -174,5 +180,12 @@ function createResults(events) {
 }
 
 function addSaveListener(id) {
-    console.log(id)
+    let meetupSaveButton = document.getElementById(`meetupButton${id}`)
+    meetupSaveButton.addEventListener("click", function () {
+        meetupIteneraryDiv.innerHTML = ""
+        resultToSave = document.getElementById(`meetupLink${id}`)
+        meetupIteneraryDiv.innerHTML = 'Meetup: '
+        meetupIteneraryDiv.appendChild(resultToSave)
+        resultsSection.innerHTML = ""
+    })
 }
