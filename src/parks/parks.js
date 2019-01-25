@@ -1,23 +1,55 @@
 
-const fetchData = () => {
-    return fetch("https://data.nashville.gov/resource/xbru-cfzi.json")
-        .then(parks => parks.json())
+const fetchParkData = () => {
+        return fetch("https://data.nashville.gov/resource/xbru-cfzi.json")
+                .then(parks => parks.json())
 }
 
-const parkData = fetchData().then (events => {
-console.log(events)
+const inputEl = document.querySelector("#input--park")
+
+const buttonEl = document.querySelector("#button--park")
+
+const resultEl = document.querySelector("#section--results")
+
+const addHtmlToResult = (...arg) => {
+        resultEl.innerHTML += `<div class = "result--${arg[0]}"> ${arg[0]}. ${arg[1]} :  ${arg[2]}
+        <button class = "save--button--${arg[0]}"> save </button>
+        </div>`
+}
+
+const addHtmlToIteItenerary = (parkName) => {
+        const iteneraryEl = document.querySelector("#section--itenerary")
+        iteneraryEl.innerHTML += `<div id = "itenerary--park">parks: ${parkName} </div>`
+}
+
+
+buttonEl.addEventListener("click", () => {
+        const parkData = fetchParkData()
+                .then(events => {
+                        resultEl.innerHTML= ""
+                        e = Reflect.ownKeys(events[0]).filter(s => s.startsWith(inputEl.value))
+                        inputEl.value = e[0]
+                        const selected_parks = events.filter(parks => parks[`${e[0]}`] === "Yes")
+                        console.log(selected_parks)
+                        selected_parks.forEach((park, index) => {
+                                addHtmlToResult(index+1, park.park_name, park.mapped_location_address)
+                        });
+                })
 })
 
 
+saveButtonEl = document.querySelectorAll([class ^= "save--button"])
 
-//     str = "comm"
-//     //console.log(events)
-//     parkData.forEach(elt => {
-        e = Reflect.ownKeys(elt).filter(s => s.startsWith(str))
-//         console.log(e)
-//     });
-// })
 
+inputEl.addEventListener("keyup", () => {
+        const parkData = fetchParkData()
+                .then(events => {
+                        //console.log(events)
+                        //debugger
+                        e = Reflect.ownKeys(events[0]).filter(s => s.startsWith(inputEl.value))
+                        inputEl.placeholder = e[0]
+                })
+
+})
 // const filterData = (key) => {
 //     fetch("https://data.nashville.gov/resource/xbru-cfzi.json")
 //         .then(parks => parks.json())
@@ -27,6 +59,8 @@ console.log(events)
 //             console.log(selected_array)
 //         })
 // }
+
+
 
 // const playgroundEL = document.querySelector("#playGround")
 // playgroundEL.addEventListener("click", () => {
