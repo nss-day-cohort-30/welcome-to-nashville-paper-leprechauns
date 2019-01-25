@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-h1 {
-    text-align: center;
-=======
 body {
     font-family: sans-serif
 }
@@ -38,9 +34,12 @@ h2 {
 }
 
 footer {
+    color: white;
     text-align: center;
-    position:absolute;
+    position: absolute;
     width: 100%;
+    height: 18px;
+    background-color: grey;
     bottom:0;
 }
 
@@ -52,7 +51,7 @@ button {
     border: solid 1px black;
     padding: 10px;
     width: 400px;
-    max-height: 400px;
+    max-height: 200px;
     overflow: auto
 }
 
@@ -62,5 +61,4 @@ button {
     width: 400px;
     max-height: 400px;
     overflow: auto
->>>>>>> 6564af0763ce12be9908db8b02710d504d7ff360
 }
