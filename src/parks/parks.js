@@ -24,7 +24,7 @@ parkSearchButton.addEventListener("click", () => {
         const parkData = ParkFetchParkData()
                 .then(events => {
                         parkResultEl.innerHTML = ""
-                        document.querySelector(".hint--park").innerHTML =  ""
+                        document.querySelector(".hint--park").innerHTML = ""
                         //get the list of keys values search value
                         const keyList = Reflect.ownKeys(events[0]).filter(s => s.startsWith(parkInputEl.value))
                         if (keyList.length === 0) {
@@ -48,7 +48,11 @@ parkInputEl.addEventListener("keyup", () => {
         const parkData = ParkFetchParkData()
                 .then(events => {
                         const keyList = Reflect.ownKeys(events[0]).filter(s => s.startsWith(parkInputEl.value))
-                        document.querySelector(".hint--park").innerHTML =   keyList[0]
+                        if (keyList.length === 0) {
+                                document.querySelector(".hint--park").innerHTML = ""
+                        }
+                        else
+                                document.querySelector(".hint--park").innerHTML = keyList[0]
                 })
 
 })
