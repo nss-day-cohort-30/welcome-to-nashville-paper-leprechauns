@@ -61,4 +61,11 @@ button {
     width: 400px;
     max-height: 400px;
     overflow: auto
+<<<<<<< HEAD
+}
+
+.hint--park {
+    font-size : 10px;
+=======
+>>>>>>> f7cc31817e5cc53571d090f8ebb30dd356924669
 }
