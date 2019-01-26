@@ -66,10 +66,6 @@ let meetupCategories = [
         name: "fashion",
         value: 106
     },
-    religion = {
-        name: "religion",
-        value: 114
-    },
     home = {
         name: "home",
         value: 117
@@ -95,6 +91,43 @@ let meetupCategories = [
 let meetupResultsSection = document.getElementById("section--results")
 let meetupItenerarySection = document.getElementById("section--itenerary")
 
+let meetupSearchDiv = document.getElementById("search--meetups")
+let meetupDropdown = document.createElement("span")
+meetupDropdown.setAttribute("class", "dropdown")
+meetupDropdown.innerHTML = `
+    <button class="dropbtn">Help</button>
+    <div class="dropdown-content">
+    <p>Music</p>
+    <p>Business</p>
+    <p>Community</p>
+    <p>Performing</p>
+    <p>Film</p>
+    <p>Sports</p>
+    <p>Health</p>
+    <p>Science</p>
+    <p>Travel</p>
+    <p>Charity</p>
+    <p>Religion</p>
+    <p>Seasonal</p>
+    <p>Government</p>
+    <p>Fashion</p>
+    <p>Home</p>
+    <p>Auto</p>
+    <p>Hobbies</p>
+    <p>Other</p>
+    <p>School</p>
+    </div>
+    `
+meetupSearchDiv.appendChild(meetupDropdown)
+
+let meetupInput = document.getElementById("input--meetups")
+
+meetupDropdown.addEventListener("click", function(event) {
+    if (event.target.nodeName === "P") {
+        meetupInput.value = event.target.innerHTML
+    }
+})
+
 //Convert single digit integer to two digits
 function pad(d) {
     return (d < 10) ? '0' + d.toString() : d.toString();
@@ -119,11 +152,9 @@ let meetupIteneraryDiv = document.getElementById("itenerary--meetup")
 let meetupDiv = document.createElement("div")
 meetupDiv.setAttribute("id", "meetupDiv")
 
-let meetupInput = document.getElementById("input--meetups")
-
 let meetupButton = document.getElementById("button--meetups")
 meetupButton.addEventListener("click", function () {
-    let categoryInput = meetupInput.value
+    let categoryInput = meetupInput.value.toLowerCase()
     meetupInput.value = ""
     meetupSearch(categoryInput)
 })
@@ -159,7 +190,6 @@ function fetchMeetupAPI(category) {
 
 function meetupCreateResults(events) {
     let resultCounter = 1
-    console.log(events)
     if (events.events.length === 0) {
         meetupResultsSection.innerHTML = '<p style="color:red;">No meetups for this category today</p>'
     } else {
