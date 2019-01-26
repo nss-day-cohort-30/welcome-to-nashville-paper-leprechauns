@@ -128,6 +128,12 @@ meetupButton.addEventListener("click", function () {
     meetupSearch(categoryInput)
 })
 
+meetupInput.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+      meetupButton.click()
+    }
+  });
+
 //Get values for day, month, and year for today and tomorow
 let meetupToday = new Date
 let meetupTomorrow = new Date(meetupToday)
