@@ -1,3 +1,6 @@
+// API key reference
+concertApiKey = config.concertKey
+
 // determine today's and tomorrow's dates and convert to appropriate format for API search =============================
 
 // Make single digit dates double digits
@@ -24,7 +27,7 @@ const fetchConcertAPI = (concertSearchTerm) => {
 
     //fetch will automatically only search today's music events in Nashville, along with whatever keyword User provides
     //startDateTime is set to 12am this morning and endDateTime 12am tomorrow morning, which equals today only
-    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?city=nashville&startDateTime=${todayYear}-${todayMonth}-${todayDay}T06:00:01Z&endDateTime=${tomorrowYear}-${tomorrowMonth}-${tomorrowDay}T06:00:00Z&keyword=music&keyword=${concertSearchTerm}&apikey=MqDKE2kPYJihkI1bA4caKHsLSKNQjBoW`)
+    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?city=nashville&startDateTime=${todayYear}-${todayMonth}-${todayDay}T06:00:01Z&endDateTime=${tomorrowYear}-${tomorrowMonth}-${tomorrowDay}T06:00:00Z&keyword=music&keyword=${concertSearchTerm}&apikey=${concertApiKey}`)
         .then(response => response.json())
         .then(parsedData => {
             const concertSearchResults = parsedData
