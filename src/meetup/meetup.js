@@ -1,5 +1,7 @@
+let meetupApiKey = config.meetupKey
+
 //Array of objects to pair category names with their values
-let categories = [
+let meetupCategories = [
     music = {
         name: "music",
         value: 103
@@ -90,6 +92,9 @@ let categories = [
     }
 ]
 
+let meetupResultsSection = document.getElementById("section--results")
+let meetupItenerarySection = document.getElementById("section--itenerary")
+
 //Convert single digit integer to two digits
 function pad(d) {
     return (d < 10) ? '0' + d.toString() : d.toString();
@@ -98,24 +103,18 @@ function pad(d) {
 //Pair input string with corresponding category value
 function meetupSearch(textInput) {
     let validInput = false
-    categories.forEach(function(element) {
+    meetupCategories.forEach(function(element) {
         if (element.name === textInput) {
             fetchMeetupAPI(element.value)
             validInput = true
         }
     })
     if (validInput === false) {
-        resultsSection.innerHTML = '<p style="color:red;">Invalid input</p>'
+        meetupResultsSection.innerHTML = '<p style="color:red;">Invalid input</p>'
     }
 }
 
-
-let resultsSection = document.getElementById("section--results")
-let itenerarySection = document.getElementById("section--itenerary")
-
-let meetupIteneraryDiv = document.createElement("div")
-meetupIteneraryDiv.setAttribute("id", "itenerary--meetup")
-itenerarySection.appendChild(meetupIteneraryDiv)
+let meetupIteneraryDiv = document.getElementById("itenerary--meetup")
 
 let meetupDiv = document.createElement("div")
 meetupDiv.setAttribute("id", "meetupDiv")
@@ -130,41 +129,42 @@ meetupButton.addEventListener("click", function () {
 })
 
 //Get values for day, month, and year for today and tomorow
-let today = new Date
-let tomorrow = new Date(today)
-tomorrow.setDate(tomorrow.getDate()+1)
-let todayMonth = pad(today.getMonth()+1)
-let tomorrowMonth = pad(tomorrow.getMonth()+1)
-let todayDay = pad(today.getDate())
-let tomorrowDay = pad(tomorrow.getDate())
-let todayYear= today.getFullYear()
-let tomorrowYear= tomorrow.getFullYear()
+let meetupToday = new Date
+let meetupTomorrow = new Date(meetupToday)
+meetupTomorrow.setDate(meetupTomorrow.getDate()+1)
+let meetupTodayMonth = pad(meetupToday.getMonth()+1)
+let meetupTomorrowMonth = pad(meetupTomorrow.getMonth()+1)
+let meetupTodayDay = pad(meetupToday.getDate())
+let meetupTomorrowDay = pad(meetupTomorrow.getDate())
+let meetupTodayYear= meetupToday.getFullYear()
+let meetupTomorrowYear= meetupTomorrow.getFullYear()
 
 
 //Function to fetch from eventbrite api
 function fetchMeetupAPI(category) {
-    fetch(`https://www.eventbriteapi.com/v3/events/search/?location.address=nashville&location.within=50mi&categories=${category}&start_date.range_start=${todayYear}-${todayMonth}-${todayDay}T06%3A00%3A00&start_date.range_end=${tomorrowYear}-${tomorrowMonth}-${tomorrowDay}T05%3A59%3A59&token=MJMTGPG2SRILJMB5I5LS`, {
+    fetch(`https://www.eventbriteapi.com/v3/events/search/?location.address=nashville&location.within=50mi&categories=${category}&start_date.range_start=${meetupTodayYear}-${meetupTodayMonth}-${meetupTodayDay}T06%3A00%3A00&start_date.range_end=${meetupTomorrowYear}-${meetupTomorrowMonth}-${meetupTomorrowDay}T05%3A59%3A59&token=${meetupApiKey}`, {
         headers: {
             "Accept": "application/json"
         },
     })
         .then(response => response.json())
-        .then(events => {createResults(events)})
+        .then(events => {meetupCreateResults(events)})
 }
 
-function createResults(events) {
+function meetupCreateResults(events) {
     let resultCounter = 1
     console.log(events)
     if (events.events.length === 0) {
-        resultsSection.innerHTML = '<p style="color:red;">No meetups for this category today</p>'
+        meetupResultsSection.innerHTML = '<p style="color:red;">No meetups for this category today</p>'
     } else {
-        resultsSection.innerHTML = ""
+        meetupResultsSection.innerHTML = ""
         events.events.forEach(function(element) {
             let span = document.createElement("span")
             span.setAttribute("id", `meetupResult${resultCounter}`)
             span.innerHTML = `${resultCounter}: `
             let result = document.createElement("a")
             result.setAttribute("href", element.url)
+            result.setAttribute("target", "_blank")
             result.setAttribute("id", `meetupLink${resultCounter}`)
             result.innerHTML = element.name.text
             let saveButton = document.createElement("button")
@@ -173,20 +173,20 @@ function createResults(events) {
             span.appendChild(result)
             span.appendChild(saveButton)
             span.innerHTML += "</br>"
-            resultsSection.appendChild(span)
-            addSaveListener(resultCounter)
+            meetupResultsSection.appendChild(span)
+            meetupAddSaveListener(resultCounter)
             resultCounter++
         })
     }
 }
 
-function addSaveListener(id) {
+function meetupAddSaveListener(id) {
     let meetupSaveButton = document.getElementById(`meetupButton${id}`)
     meetupSaveButton.addEventListener("click", function () {
         meetupIteneraryDiv.innerHTML = ""
         resultToSave = document.getElementById(`meetupLink${id}`)
         meetupIteneraryDiv.innerHTML = 'Meetup: '
         meetupIteneraryDiv.appendChild(resultToSave)
-        resultsSection.innerHTML = ""
+        meetupResultsSection.innerHTML = ""
     })
 }

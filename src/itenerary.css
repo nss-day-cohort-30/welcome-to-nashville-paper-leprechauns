@@ -34,9 +34,12 @@ h2 {
 }
 
 footer {
+    color: white;
     text-align: center;
-    position:absolute;
+    position: absolute;
     width: 100%;
+    height: 18px;
+    background-color: grey;
     bottom:0;
 }
 
@@ -48,7 +51,7 @@ button {
     border: solid 1px black;
     padding: 10px;
     width: 400px;
-    max-height: 400px;
+    max-height: 200px;
     overflow: auto
 }
 
@@ -58,4 +61,11 @@ button {
     width: 400px;
     max-height: 400px;
     overflow: auto
+<<<<<<< HEAD
+}
+
+.hint--park {
+    font-size : 10px;
+=======
+>>>>>>> f7cc31817e5cc53571d090f8ebb30dd356924669
 }
