@@ -179,7 +179,7 @@ let meetupTomorrowYear= meetupTomorrow.getFullYear()
 
 //Function to fetch from eventbrite api
 function fetchMeetupAPI(category) {
-    fetch(`https://www.eventbriteapi.com/v3/events/search/?location.address=nashville&location.within=50mi&categories=${category}&start_date.range_start=${meetupTodayYear}-${meetupTodayMonth}-${meetupTodayDay}T06%3A00%3A00&start_date.range_end=${meetupTomorrowYear}-${meetupTomorrowMonth}-${meetupTomorrowDay}T05%3A59%3A59&token=${meetupApiKey}`, {
+    fetch(`https://www.eventbriteapi.com/v3/events/search/?location.address=nashville&expand=venue&location.within=50mi&categories=${category}&start_date.range_start=${meetupTodayYear}-${meetupTodayMonth}-${meetupTodayDay}T06%3A00%3A00&start_date.range_end=${meetupTomorrowYear}-${meetupTomorrowMonth}-${meetupTomorrowDay}T05%3A59%3A59&token=${meetupApiKey}`, {
         headers: {
             "Accept": "application/json"
         },
@@ -189,6 +189,7 @@ function fetchMeetupAPI(category) {
 }
 
 function meetupCreateResults(events) {
+    console.log(events)
     let resultCounter = 1
     if (events.events.length === 0) {
         meetupResultsSection.innerHTML = '<p style="color:red;">No meetups for this category today</p>'
@@ -197,7 +198,7 @@ function meetupCreateResults(events) {
         events.events.forEach(function(element) {
             let span = document.createElement("span")
             span.setAttribute("id", `meetupResult${resultCounter}`)
-            span.innerHTML = `${resultCounter}: `
+            span.innerHTML = `${resultCounter}. `
             let result = document.createElement("a")
             result.setAttribute("href", element.url)
             result.setAttribute("target", "_blank")
@@ -207,22 +208,29 @@ function meetupCreateResults(events) {
             saveButton.setAttribute("id", `meetupButton${resultCounter}`)
             saveButton.innerHTML = "Save"
             span.appendChild(result)
+            let meetupAddress = element.venue.address.address_1
+            if (meetupAddress != null) {
+                span.innerHTML += `: ${meetupAddress}`
+            }
             span.appendChild(saveButton)
             span.innerHTML += "</br>"
             meetupResultsSection.appendChild(span)
-            meetupAddSaveListener(resultCounter)
+            meetupAddSaveListener(resultCounter, meetupAddress)
             resultCounter++
         })
     }
 }
 
-function meetupAddSaveListener(id) {
+function meetupAddSaveListener(id, meetupAddress) {
     let meetupSaveButton = document.getElementById(`meetupButton${id}`)
     meetupSaveButton.addEventListener("click", function () {
         meetupIteneraryDiv.innerHTML = ""
         resultToSave = document.getElementById(`meetupLink${id}`)
         meetupIteneraryDiv.innerHTML = 'Meetup: '
         meetupIteneraryDiv.appendChild(resultToSave)
+        if (meetupAddress != null){
+            meetupIteneraryDiv.innerHTML += `: ${meetupAddress}`
+        }
         meetupResultsSection.innerHTML = ""
     })
 }
