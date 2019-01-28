@@ -24,55 +24,72 @@ let tomorrowYear = tomorrow.getFullYear()
 const concertsResultsSection = document.getElementById("section--results")
 const concertIteneraryDiv = document.getElementById("itenerary--concerts")
 const concertInput = document.getElementById("input--concerts")
-console.log(concertInput, "input")
 
 
 const fetchConcertAPI = () => {
-    
+
     //fetch will automatically only search today's music events in Nashville, along with whatever keyword User provides
     //startDateTime is set to 12am this morning and endDateTime 12am tomorrow morning, which equals today only
     fetch(`https://app.ticketmaster.com/discovery/v2/events.json?city=nashville&startDateTime=${todayYear}-${todayMonth}-${todayDay}T06:00:01Z&endDateTime=${tomorrowYear}-${tomorrowMonth}-${tomorrowDay}T06:00:00Z&keyword=music&apikey=${concertApiKey}`)
-    .then(response => response.json())
-    .then(parsedData => {
-        let concertFetchResults = parsedData
-        console.log(concertFetchResults)
-        const concertHTML = makeConcertResultsComponent(concertFetchResults)
-        showConcertResults(concertHTML)
-    })
+        .then(response => response.json())
+        .then(parsedData => {
+            let concertFetchResults = parsedData
+            const concertHTML = makeConcertResultsComponent(concertFetchResults)
+            showConcertResults(concertHTML)
+        })
 }
 
 const makeConcertResultsComponent = (results) => {
-    const concertSearchTerm = concertInput.value
-    console.log("searchterm", concertSearchTerm)
+    const concertSearchTerm = concertInput.value.toLowerCase()
     let concertResultsToSearch = results._embedded.events
     let concertResultsHTML = ""
-    for (let i = 0; i < concertResultsToSearch.length; i++) {
-        let currentConcert = concertResultsToSearch[i]
-        console.log(currentConcert.classifications[0].genre.name)
-        console.log("searchterm", concertSearchTerm)
-        if ((currentConcert.classifications[0].genre.name || currentConcert.classifications[0].subGenre.name) === concertSearchTerm) {
-            concertResultsHTML += `<div id="results--concerts${i}">${currentConcert.name} at ${currentConcert._embedded.venues[0].name}</div><button id="results-button--concerts${i}">Save</button>`
+    if (concertSearchTerm === "") {
+        concertResultsHTML = `<div>Type in a music genre, or type "all" to see all of today's events.</div>`
+    } else if (concertSearchTerm === "all") {
+        for (let i = 0; i < concertResultsToSearch.length; i++) {
+            let currentConcert = concertResultsToSearch[i]
+            concertResultsHTML += `<div class="result" id="results--concerts${i}">${currentConcert.name} at ${currentConcert._embedded.venues[0].name}</div><button id="results-button--concerts${i}">Save</button>`
+        }
+    } else {
+        for (let i = 0; i < concertResultsToSearch.length; i++) {
+            let currentConcert = concertResultsToSearch[i]
+            if ((currentConcert.classifications[0].genre.name.toLowerCase() || currentConcert.classifications[0].subGenre.name.toLowerCase()) === concertSearchTerm) {
+                concertResultsHTML += `<div class="result" id="results--concerts${i}">${currentConcert.name} at ${currentConcert._embedded.venues[0].name}</div><button id="results-button--concerts${i}">Save</button>`
+            }
         }
     }
-    console.log(concertResultsHTML)
     return concertResultsHTML
 }
 
-const concertSearch = () => {
-    fetchConcertAPI()
-}
-
 const showConcertResults = (concertResultsHTML) => {
+    if (concertResultsHTML === "") {
+        concertResultsHTML = `<div>Sorry, there are no concerts of that type today.  Try another genre, or type "all" to see all of today's events.</div>`
+    }
     concertsResultsSection.innerHTML = concertResultsHTML
 }
 
 // find the button for a concerts search
 const concertSearchButton = document.getElementById("button--concerts")
 // event listener to activate concerts search
-concertSearchButton.addEventListener("click", concertSearch)
+concertSearchButton.addEventListener("click", fetchConcertAPI)
 
-
-
-
-    // .com/discovery/v2/events.json?city=nashville&
-    // "https://app.ticketmaster.com/discovery/v2/events.json?apikey=MqDKE2kPYJihkI1bA4caKHsLSKNQjBoW"
+//Save button click event--
+concertsResultsSection.addEventListener("click", (evt) => {
+    let iteneraryConcertTarget;
+    let concertIdToTarget;
+    if (evt.target.id.split("--")[0] === "results-button") {
+        concertIdToTarget = evt.target.id.split("--")[1]
+    }
+    const allResults = document.getElementsByClassName("result")
+    for (let i = 0; i < allResults.length; i++) {
+        let currentResult = allResults[i]
+        if (currentResult.id.split("--")[1] === concertIdToTarget) {
+            iteneraryConcertTarget = currentResult
+            const iteneraryConcertDiv = document.getElementById("itenerary--concerts")
+            let iteneraryConcertContent = `Concert: ${iteneraryConcertTarget.textContent}`
+            iteneraryConcertDiv.textContent = "Testing"
+            iteneraryConcertDiv.textContent = iteneraryConcertContent
+            concertsResultsSection.innerHTML = ""
+        }
+    }
+})
