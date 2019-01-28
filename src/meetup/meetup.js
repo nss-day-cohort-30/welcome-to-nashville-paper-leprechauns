@@ -189,7 +189,6 @@ function fetchMeetupAPI(category) {
 }
 
 function meetupCreateResults(events) {
-    console.log(events)
     let resultCounter = 1
     if (events.events.length === 0) {
         meetupResultsSection.innerHTML = '<p style="color:red;">No meetups for this category today</p>'
