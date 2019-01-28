@@ -31,6 +31,7 @@ const fetchConcertAPI = (concertSearchTerm) => {
         .then(response => response.json())
         .then(parsedData => {
             const concertSearchResults = parsedData
+            console.log(concertSearchResults)
             return concertSearchResults
         })
 
