@@ -51,7 +51,7 @@ const makeConcertResultsComponent = (results) => {
         console.log(currentConcert.classifications[0].genre.name)
         console.log("searchterm", concertSearchTerm)
         if ((currentConcert.classifications[0].genre.name || currentConcert.classifications[0].subGenre.name) === concertSearchTerm) {
-            concertResultsHTML += `<span id="results--concerts${i}">${currentConcert.name} at ${currentConcert._embedded.venues[0].name}</span><button id="results-button--concerts${i}">Save</button>`
+            concertResultsHTML += `<div id="results--concerts${i}">${currentConcert.name} at ${currentConcert._embedded.venues[0].name}</div><button id="results-button--concerts${i}">Save</button>`
         }
     }
     console.log(concertResultsHTML)

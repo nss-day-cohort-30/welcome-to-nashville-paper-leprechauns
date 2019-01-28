@@ -24,9 +24,10 @@ parkSearchButton.addEventListener("click", () => {
         const parkData = ParkFetchParkData()
                 .then(events => {
                         parkResultEl.innerHTML = ""
-                        document.querySelector(".hint--park").innerHTML =  ""
+                        document.querySelector(".hint--park").innerHTML = ""
                         //get the list of keys values search value
-                        const keyList = Reflect.ownKeys(events[0]).filter(s => s.startsWith(parkInputEl.value))
+                        const keyList = Reflect.ownKeys(events[0]).filter(s => s.startsWith(parkInputEl.value.toLowerCase())).filter(p => p.startsWith(":@") === false)
+
                         if (keyList.length === 0) {
                                 parkResultEl.innerHTML = "Invalid search Input"
                         }
@@ -47,11 +48,15 @@ parkSearchButton.addEventListener("click", () => {
 parkInputEl.addEventListener("keyup", () => {
         const parkData = ParkFetchParkData()
                 .then(events => {
-                        const keyList = Reflect.ownKeys(events[0]).filter(s => s.startsWith(parkInputEl.value))
-                        document.querySelector(".hint--park").innerHTML =   keyList[0]
+                        const keyList = Reflect.ownKeys(events[0]).filter(s => s.startsWith(parkInputEl.value.toLowerCase())).filter(p => p.startsWith(":@") === false)
+                        if (keyList.length === 0) {
+                                document.querySelector(".hint--park").innerHTML = ""
+                        }
+                        else
+                                document.querySelector(".hint--park").innerHTML = keyList[0]
                 })
-
 })
+
 
 //Save button click event--
 parkResultEl.addEventListener("click", (evt) => {
